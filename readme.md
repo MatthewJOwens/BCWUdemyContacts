@@ -29,14 +29,14 @@ The basic design and layout for this app has been mocked out and the names of th
 1. Add The extra input fields for `phone` and `emergency-contact` to the add Contact Form
   - use type checkbox for Emergency Contact
   - Don't forget the name Attribute
-1. Handle the form submission
+2. Handle the form submission
   - Prevent the page from reloading when submitting the form
   - Pull the form data to get a new contact and give that contact an id
   - Add the new contact to the contacts list
   - Reset the form
   - Save the contacts list
   - Draw the contacts list
-1. Handle Page Refresh
+3. Handle Page Refresh
   - Load the contacts list
   - Draw the contacts list
-1. Show and Hide Form on button clicks
+4. Show and Hide Form on button clicks
