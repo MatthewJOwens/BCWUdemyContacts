@@ -1,4 +1,5 @@
 let contacts = []
+let emergencyContact = false
 
 /**
  * Called when submitting the new Contact Form
@@ -10,7 +11,18 @@ let contacts = []
  * *** push: resources/push.jpg
  */
 function addContact(event) {
-  
+  event.preventDefault()
+  let form = event.target
+  let contactName = form.name.value
+  let contactTel = form.tel.value
+  let contactID = generateId()
+  console.log(contactName, contactTel, contactID, form.emergency.checked)
+  if (form.emergency.checked) {
+    emergencyContact = true
+  }
+  let currentContact = { ID: contactID, name: contactName, tel: contactTel, emergency: emergencyContact }
+  contacts.push(currentContact)
+  saveContacts()
 }
 
 /**
@@ -18,7 +30,7 @@ function addContact(event) {
  * Saves the string to localstorage at the key contacts 
  */
 function saveContacts() {
- 
+  window.localStorage.setItem("contacts", JSON.stringify(contacts))
 }
 
 /**
@@ -27,7 +39,10 @@ function saveContacts() {
  * the contacts array to the retrieved array
  */
 function loadContacts() {
-  
+  let contactsData = JSON.parse(window.localStorage.getItem("contacts"))
+  if (contactsData) {
+    contacts = contactsData
+  }
 }
 
 /**
@@ -36,7 +51,40 @@ function loadContacts() {
  * contacts in the contacts array
  */
 function drawContacts() {
- 
+  let template = ""
+
+  contacts.sort((a, b) => a.name - b.name)
+
+  contacts.forEach(contact => {
+    if (emergencyContact) {
+      template += `
+      <div class="card mt-1 mb-1 emergency-contact">
+        <h3 class="mt-1 mb-1">${contact.name}</h3>
+        <div class="d-flex space-between">
+          <p>
+            <i class="fa fa-fw fa-phone"></i>
+            <span>${contact.tel}</span>
+          </p>
+          <i class="action fa fa-trash text-danger"></i>
+        </div>
+      </div>
+      `
+    } else {
+      template += `
+            <div class="card mt-1 mb-1">
+        <h3 class="mt-1 mb-1">${contact.name}</h3>
+        <div class="d-flex space-between">
+          <p>
+            <i class="fa fa-fw fa-phone"></i>
+            <span>${contact.tel}</span>
+          </p>
+          <i class="action fa fa-trash text-danger"></i>
+        </div>
+      </div>
+      `
+    }
+  })
+  document.getElementById("contacts").innerHTML = template
 }
 
 /**
