@@ -17,12 +17,16 @@ function addContact(event) {
   let contactTel = form.tel.value
   let contactID = generateId()
   console.log(contactName, contactTel, contactID, form.emergency.checked)
+
   if (form.emergency.checked) {
     emergencyContact = true
   }
   let currentContact = { ID: contactID, name: contactName, tel: contactTel, emergency: emergencyContact }
+
   contacts.push(currentContact)
   saveContacts()
+  // Should drawContacts() go here or loadContacts() and have draw inside that?
+  drawContacts()
 }
 
 /**
@@ -55,6 +59,7 @@ function drawContacts() {
 
   contacts.sort((a, b) => a.name - b.name)
 
+  // This somehow sets all templates based on newly added template's Emergency setting.
   contacts.forEach(contact => {
     if (emergencyContact) {
       template += `
