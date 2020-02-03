@@ -25,8 +25,7 @@ function addContact(event) {
 
   contacts.push(currentContact)
   saveContacts()
-  // Should drawContacts() go here or loadContacts() and have draw inside that?
-  drawContacts()
+  form.reset()
 }
 
 /**
@@ -35,6 +34,7 @@ function addContact(event) {
  */
 function saveContacts() {
   window.localStorage.setItem("contacts", JSON.stringify(contacts))
+  drawContacts()
 }
 
 /**
@@ -54,42 +54,27 @@ function loadContacts() {
  * DOM and adds a new div element for each of the
  * contacts in the contacts array
  */
+
 function drawContacts() {
   let template = ""
+  let contactListElement = document.getElementById("contacts")
+  //contacts.sort((a, b) => a.name - b.name)
 
-  contacts.sort((a, b) => a.name - b.name)
-
-  // This somehow sets all templates based on newly added template's Emergency setting.
   contacts.forEach(contact => {
-    if (emergencyContact) {
-      template += `
-      <div class="card mt-1 mb-1 emergency-contact">
+    template += `
+      <div class="card mt-1 mb-1 ${contact.emergency ? 'emergency-contact' : ''}">
         <h3 class="mt-1 mb-1">${contact.name}</h3>
         <div class="d-flex space-between">
           <p>
             <i class="fa fa-fw fa-phone"></i>
             <span>${contact.tel}</span>
           </p>
-          <i class="action fa fa-trash text-danger"></i>
+          <i class="action fa fa-trash text-danger" onclick="removeContact('${contact.ID}')"></i>
         </div>
       </div>
       `
-    } else {
-      template += `
-            <div class="card mt-1 mb-1">
-        <h3 class="mt-1 mb-1">${contact.name}</h3>
-        <div class="d-flex space-between">
-          <p>
-            <i class="fa fa-fw fa-phone"></i>
-            <span>${contact.tel}</span>
-          </p>
-          <i class="action fa fa-trash text-danger"></i>
-        </div>
-      </div>
-      `
-    }
   })
-  document.getElementById("contacts").innerHTML = template
+  contactListElement.innerHTML = template
 }
 
 /**
@@ -102,7 +87,15 @@ function drawContacts() {
  * @param {string} contactId 
  */
 function removeContact(contactId) {
+  console.log("Removing " + contactId)
+  let removal = contacts.findIndex(contact => contact.ID === contactId)
+  console.log(removal)
+  console.log(contacts[removal])
+  contacts.splice(removal, 1)
+
+  saveContacts()
 }
+
 
 /**
  * Toggles the visibility of the AddContact Form
