@@ -1,5 +1,5 @@
-let contacts = []
-let emergencyContact = false
+let contacts = [];
+let emergencyContact = false;
 
 /**
  * Called when submitting the new Contact Form
@@ -11,30 +11,32 @@ let emergencyContact = false
  * *** push: resources/push.jpg
  */
 function addContact(event) {
-  event.preventDefault()
-  let form = event.target
-  let contactName = form.name.value
-  let contactTel = form.tel.value
-  let contactID = generateId()
-  console.log(contactName, contactTel, contactID, form.emergency.checked)
+  event.preventDefault();
+  const form = event.target;
+  const contactName = form.name.value;
+  const contactTel = form.tel.value;
+  const contactID = generateId();
+  console.log(contactName, contactTel, contactID, form.emergency.checked);
 
   if (form.emergency.checked) {
-    emergencyContact = true
+    emergencyContact = true;
   }
-  let currentContact = { ID: contactID, name: contactName, tel: contactTel, emergency: emergencyContact }
+  const currentContact = {
+    ID: contactID, name: contactName, tel: contactTel, emergency: emergencyContact,
+  };
 
-  contacts.push(currentContact)
-  saveContacts()
-  form.reset()
+  contacts.push(currentContact);
+  saveContacts();
+  form.reset();
 }
 
 /**
  * Converts the contacts array to a JSON string then
- * Saves the string to localstorage at the key contacts 
+ * Saves the string to localstorage at the key contacts
  */
 function saveContacts() {
-  window.localStorage.setItem("contacts", JSON.stringify(contacts))
-  drawContacts()
+  window.localStorage.setItem('contacts', JSON.stringify(contacts));
+  drawContacts();
 }
 
 /**
@@ -43,24 +45,24 @@ function saveContacts() {
  * the contacts array to the retrieved array
  */
 function loadContacts() {
-  let contactsData = JSON.parse(window.localStorage.getItem("contacts"))
+  const contactsData = JSON.parse(window.localStorage.getItem('contacts'));
   if (contactsData) {
-    contacts = contactsData
+    contacts = contactsData;
   }
 }
 
 /**
- * This function targets the contacts-list on the 
+ * This function targets the contacts-list on the
  * DOM and adds a new div element for each of the
  * contacts in the contacts array
  */
 
 function drawContacts() {
-  let template = ""
-  let contactListElement = document.getElementById("contacts")
-  //contacts.sort((a, b) => a.name - b.name)
+  let template = '';
+  const contactListElement = document.getElementById('contacts');
+  // contacts.sort((a, b) => a.name - b.name)
 
-  contacts.forEach(contact => {
+  contacts.forEach((contact) => {
     template += `
       <div class="card mt-1 mb-1 ${contact.emergency ? 'emergency-contact' : ''}">
         <h3 class="mt-1 mb-1">${contact.name}</h3>
@@ -72,28 +74,28 @@ function drawContacts() {
           <i class="action fa fa-trash text-danger" onclick="removeContact('${contact.ID}')"></i>
         </div>
       </div>
-      `
-  })
-  contactListElement.innerHTML = template
+      `;
+  });
+  contactListElement.innerHTML = template;
 }
 
 /**
  * This function is called with a contact id
- * and will use the id to find and remove the 
+ * and will use the id to find and remove the
  * contact by their id from the list of contacts
- * *** hints: 
+ * *** hints:
  * *** findIndex: resources/findIndex.jpg
  * *** splice: resources/splice.jpg
- * @param {string} contactId 
+ * @param {string} contactId
  */
 function removeContact(contactId) {
-  console.log("Removing " + contactId)
-  let removal = contacts.findIndex(contact => contact.ID === contactId)
-  console.log(removal)
-  console.log(contacts[removal])
-  contacts.splice(removal, 1)
+  console.log(`Removing ${contactId}`);
+  const removal = contacts.findIndex((contact) => contact.ID === contactId);
+  console.log(removal);
+  console.log(contacts[removal]);
+  contacts.splice(removal, 1);
 
-  saveContacts()
+  saveContacts();
 }
 
 
@@ -111,9 +113,9 @@ function toggleAddContactForm() {
  * @returns {string}
  */
 function generateId() {
-  return Math.floor(Math.random() * 10000000) + "-" + Math.floor(Math.random() * 10000000)
+  return `${Math.floor(Math.random() * 10000000)}-${Math.floor(Math.random() * 10000000)}`;
 }
 
 
-loadContacts()
-drawContacts()
+loadContacts();
+drawContacts();
