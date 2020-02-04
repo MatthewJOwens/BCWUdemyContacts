@@ -103,7 +103,12 @@ function removeContact(contactId) {
  * Toggles the visibility of the AddContact Form
  */
 function toggleAddContactForm() {
-
+  const contactForm = document.getElementById('new-contact-form');
+  if (contactForm.style.display === 'none') {
+    contactForm.style.display = 'block';
+  } else {
+    contactForm.style.display = 'none';
+  }
 }
 
 
