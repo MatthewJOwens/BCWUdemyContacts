@@ -94,6 +94,9 @@ function drawContacts() {
 function removeContact(contactId) {
   console.log(`Removing ${contactId}`);
   const removal = contacts.findIndex((contact) => contact.ID === contactId);
+  if (removal == -1) {
+    throw new Error("Invalid Contact ID")
+  }
   contacts.splice(removal, 1);
 
   saveContacts();
@@ -110,6 +113,10 @@ function toggleAddContactForm() {
   } else {
     contactForm.style.display = 'none';
   }
+  /**
+   * In the video, they use the following:
+   * document.getElementById('new-contact-form').classList.toggle("hidden");
+   */
 }
 
 
