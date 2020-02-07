@@ -26,6 +26,9 @@ function addContact(event) {
   };
 
   contacts.push(currentContact);
+  contacts.sort((a, b) => {
+    return a.name.localeCompare(b.name);
+  });
   saveContacts();
   form.reset();
 }
@@ -60,7 +63,7 @@ function loadContacts() {
 function drawContacts() {
   let template = '';
   const contactListElement = document.getElementById('contacts');
-  // contacts.sort((a, b) => a.name - b.name)
+
 
   contacts.forEach((contact) => {
     template += `
@@ -91,8 +94,6 @@ function drawContacts() {
 function removeContact(contactId) {
   console.log(`Removing ${contactId}`);
   const removal = contacts.findIndex((contact) => contact.ID === contactId);
-  console.log(removal);
-  console.log(contacts[removal]);
   contacts.splice(removal, 1);
 
   saveContacts();
